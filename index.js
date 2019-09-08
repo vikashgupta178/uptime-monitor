@@ -16,7 +16,7 @@ var server = http.createServer(function(req, res) {
   // Getting the request path
   var path = parsedUrl.pathname;
   // Trimming the unnecessary / or spaces
-  const trimmedPath = path.replace("/^\/+|\/+$/g", "");
+  const trimmedPath = path.replace("/^\/+|\/+$/g", "").slice(1);
   // Getting Request type
   const requestType = req.method.toLowerCase();
   // Getting Headers from request
@@ -43,6 +43,8 @@ var server = http.createServer(function(req, res) {
       var validStatusCode = typeof statusCode == "number" ? statusCode : 404;
       var responseData = typeof payload == "object" ? payload : {};
       var stringifiedData = JSON.stringify(responseData);
+      // Adding Header to let user know, we are sending JSON, So that they can parse it.
+      res.setHeader('Content-type','application/json');
       res.writeHead(validStatusCode);
       res.end(stringifiedData);
       console.log(
