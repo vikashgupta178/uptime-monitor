@@ -7,7 +7,10 @@ const http = require("http");
 const url = require("url");
 // For decoding Strings of payloads
 const StringDecoder = require("string_decoder").StringDecoder;
-const PORT = 4500;
+// importing environment configuration
+const config = require('./config');
+const PORT = config.port;
+const CURRENT_ENV = config.envName;
 var server = http.createServer(function(req, res) {
   // Getting the request url
   var parsedUrl = url.parse(req.url, true);
@@ -70,7 +73,7 @@ var server = http.createServer(function(req, res) {
 });
 
 server.listen(PORT, function(params) {
-  console.log("Server is listening requests on Port " + PORT);
+  console.log("Server is listening requests on Port " + PORT+" in "+CURRENT_ENV+" mode");
 });
 // Step:2 Adding RouterHandlers
 var handlers = {};
