@@ -1,18 +1,46 @@
 /*
  *   Primary file for API
  */
-// Server Dependency for listening requests
+// HTTP Server for listening requests
 const http = require("http");
+// HTTPS Server for listening requests
+const https = require("https");
 // For Parsing request path from URL
 const url = require("url");
 // For decoding Strings of payloads
 const StringDecoder = require("string_decoder").StringDecoder;
+// For accessing files smoothly
+const fs = require('fs');
 // importing environment configuration
 const config = require('./config');
-const PORT = config.port;
+const HTTP_PORT = config.httpPort;
+const HTTPS_PORT = config.httpsPort;
 const CURRENT_ENV = config.envName;
-var server = http.createServer(function(req, res) {
-  // Getting the request url
+// Instantiating HTTP Server
+var httpServer = http.createServer(function(req, res) {
+  unifiedServer(req,res);
+});
+// Starting HTTP Server
+httpServer.listen(HTTP_PORT, function(params) {
+  console.log("Server is listening requests on Port " + HTTP_PORT);
+});
+// Instantiating HTTPS Server
+// For Https, you also have to pass https key and certificates.
+var httpsOptions = {
+  key: fs.readFileSync('./https/key.pem'),
+  cert:fs.readFileSync('./https/cert.pem')
+}
+var httpsServer = https.createServer(httpsOptions,function(req, res) {
+  unifiedServer(req,res);
+});
+// Starting HTTP Server
+httpsServer.listen(HTTPS_PORT, function(params) {
+  console.log("Server is listening requests on Port " + HTTPS_PORT);
+});
+// For generating ssl certificates via openssl
+//openssl req -x509 -config "C:\openssl\openssl.cnf" -newkey rsa:4096 -keyout key.pem -out cert.pem -nodes -days 900
+var unifiedServer = function (req,res) {
+    // Getting the request url
   var parsedUrl = url.parse(req.url, true);
   // Getting the queryString Object
   var queryStringAsObject = parsedUrl.query;
@@ -70,11 +98,7 @@ var server = http.createServer(function(req, res) {
     //console.log("Request Headers ", headers);
     //console.log("Request Payload :", buffer);
   });
-});
-
-server.listen(PORT, function(params) {
-  console.log("Server is listening requests on Port " + PORT+" in "+CURRENT_ENV+" mode");
-});
+}
 // Step:2 Adding RouterHandlers
 var handlers = {};
 handlers.sample = function(data, callback) {

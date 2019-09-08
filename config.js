@@ -4,11 +4,13 @@
 var environments = {};
 
 environments.staging ={
-    port:4500,
+    httpPort:4500,
+    httpsPort:4501,
     envName:'staging'
 };
 environments.production = {
-    port:5000,
+    httpPort:5000,
+    httpsPort:5001,
     envName:'production'
 };
 var choosenEnv = typeof(process.env.NODE_ENV) =='string' ? process.env.NODE_ENV : '';
