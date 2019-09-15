@@ -101,13 +101,16 @@ var unifiedServer = function (req,res) {
 }
 // Step:2 Adding RouterHandlers
 var handlers = {};
-handlers.sample = function(data, callback) {
-  callback(406, { name: "sample handler" });
-};
+// handlers.sample = function(data, callback) {
+//   callback(406, { name: "sample handler" });
+// };
+handlers.ping = function (data, callback) {
+  callback(200);
+}
 handlers.notFound = function(data, callback) {
   callback(404);
 };
 // Step 1: Adding Routing for app
 var router = {
-  sample: handlers.sample
+  ping: handlers.ping
 };
