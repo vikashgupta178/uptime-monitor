@@ -11,6 +11,22 @@ const url = require("url");
 const StringDecoder = require("string_decoder").StringDecoder;
 // For accessing files smoothly
 const fs = require('fs');
+// importing lib data library
+/*
+const libData = require('./lib/data');
+libData.create('test','users',{'foo':'bar'},function(err){
+  console.log('error is ',err);
+})
+libData.update('test','users',{'fizz':'bzz'},function(err){
+  console.log('error is ',err);
+})
+libData.read('test','users',function(err,data){
+  console.log('error is ',err,' and data is ',data);
+})
+libData.delete('test','users',function(err){
+  console.log('error is ',err);
+})
+*/
 // importing environment configuration
 const config = require('./config');
 const HTTP_PORT = config.httpPort;
